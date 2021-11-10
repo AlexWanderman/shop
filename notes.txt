@@ -1,0 +1,36 @@
+* .env
+    SECRET_KEY=
+    SQLALCHEMY_DATABASE_URI=sqlite:///data.sqlite3
+
+* .flaskenv
+    FLASK_APP=app
+    FLASK_ENV=development production
+    FLASK_RUN_PORT=500
+
+* installed:
+    flask
+    flask-restx
+    flask-httpauth
+    flask-sqlalchemy
+    flask-migrate
+    pytest
+    pytest-flask
+    pytest-mock
+    python-dotenv
+    requests
+    gunicorn
+    celery
+    redis
+
+    ? marshmallow
+    ? cerberus
+    ? flask-mail
+
+* create database and migrations:
+    cd ...
+    export FLASK_APP= ...
+    flask db init
+    flask db migrate -m "Initial migration."
+    flask db migrate -m "."
+    flask db upgrade
+    flask db stamp head

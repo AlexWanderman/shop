@@ -1,0 +1,13 @@
+flask
+flask-restx
+flask-httpauth
+flask-sqlalchemy
+flask-migrate
+pytest
+pytest-flask
+pytest-mock
+python-dotenv
+requests
+gunicorn
+celery
+redis
