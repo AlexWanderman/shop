@@ -8,19 +8,49 @@ services:
     ports:
       - "80:80"
     depends_on:
-      - flask
+      - shop_service
+      - retailer_service
+      - manufacture_service
     networks:
       - backend
 
-  flask:
-    container_name: flask
+  shop_service:
+    container_name: shop_service
     build:
-      context: flask/
+      context: shop_service/
       dockerfile: Dockerfile
     ports:
-      - "5000:5000"
+      - "5001:5000"
     volumes:
-      - ./flask:/code
+      - ./shop_service:/code
+    environment:
+      FLASK_ENV: development
+    networks:
+      - backend
+
+  retailer_service:
+    container_name: retailer_service
+    build:
+      context: retailer_service/
+      dockerfile: Dockerfile
+    ports:
+      - "5002:5000"
+    volumes:
+      - ./retailer_service:/code
+    environment:
+      FLASK_ENV: development
+    networks:
+      - backend
+
+  manufacture_service:
+    container_name: manufacture_service
+    build:
+      context: manufacture_service/
+      dockerfile: Dockerfile
+    ports:
+      - "5003:5000"
+    volumes:
+      - ./manufacture_service:/code
       - ./celery/app/proj:/code/proj
     environment:
       FLASK_ENV: development
@@ -30,7 +60,7 @@ services:
   celery:
     container_name: celery
     build:
-      context: celery/
+      context: manufacture_service/manager/
       dockerfile: Dockerfile
     volumes:
       - ./celery/app:/app

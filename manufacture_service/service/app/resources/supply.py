@@ -63,8 +63,6 @@ class Supply(Resource):
                     else:
                         data['products'][n.product_pid] = n.amount + history.amount
 
-                print(f'\n\n\n{data = }\n\n\n')
-
                 response = s.post(f'http://localhost:5002/import', json=data)
 
                 if response.status_code == 200:
@@ -89,5 +87,3 @@ class Supply(Resource):
                 ))
 
             db.session.commit()
-
-            print('\n DONE \n')
