@@ -1,11 +1,33 @@
+''' Algoritm of sending supply:
+    1) Prepare list of retailers and their supply:
+
+        * From LauncherModel:
+        [{
+            'retailer_pid': 'cheeze_bank',
+            'products': {
+                'gauda': 30,
+                'cheder: 45,
+                'parmezan': 33,
+            }
+        }, ...]
+
+    2) Correct amount for each supply:
+
+        * From HistoryModel:
+        2.1) If last attempt for this product was NOT successful - add the last
+             attmpted amount (if it < 10_000 just in case) to current amount.
+
+    3) Try to send supply.
+'''
+
 from flask import Flask, Blueprint
 from flask_restx import Api
 from flask_httpauth import HTTPBasicAuth
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
-from manager.app import app as manager
-from manager.app.tasks import simple_task
+# from manager.app import app as manager
+# from manager.app.tasks import simple_task
 
 
 api_bp = Blueprint('api', __name__)
@@ -13,7 +35,8 @@ api = Api(
     api_bp,
     version='0.1',
     title='Manufacture Service API',
-    description='TODO',  # TODO
+    description='Manage manufactures, their admins, their assortment (for '
+                'WHO, WHAT and HOW MUCH they send).',
 )
 auth = HTTPBasicAuth()
 db = SQLAlchemy()

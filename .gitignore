@@ -2,7 +2,7 @@
 /.vscode
 /.pytest_cache
 /*/__pycache__
-/*/migrations
+/**/migrations
 # *.env
 # *.flaskenv
 *.sqlite3
