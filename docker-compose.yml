@@ -45,7 +45,7 @@ services:
   manufacture_service:
     container_name: manufacture_service
     build:
-      context: manufacture_service/
+      context: manufacture_service/service
       dockerfile: Dockerfile
     ports:
       - "5003:5000"
