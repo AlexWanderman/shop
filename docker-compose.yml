@@ -1,10 +1,12 @@
 version: '3.6'
 services:
   nginx: 
-    image: nginx:alpine
+    image: nginx
     container_name: nginx
     volumes:
       - ./default.conf:/etc/nginx/conf.d/default.conf:ro
+    expose:
+      - 80
     ports:
       - "80:80"
     depends_on:
@@ -19,12 +21,17 @@ services:
     build:
       context: shop_service/
       dockerfile: Dockerfile
+    expose:
+      - 5000
     ports:
       - "5001:5000"
     volumes:
       - ./shop_service:/code
     environment:
       FLASK_ENV: development
+      FLASK_APP: run.py
+    depends_on:
+      - database
     networks:
       - backend
 
@@ -33,12 +40,17 @@ services:
     build:
       context: retailer_service/
       dockerfile: Dockerfile
+    expose:
+      - 5000
     ports:
       - "5002:5000"
     volumes:
       - ./retailer_service:/code
     environment:
       FLASK_ENV: development
+      FLASK_APP: run.py
+    depends_on:
+      - database
     networks:
       - backend
 
@@ -47,23 +59,29 @@ services:
     build:
       context: manufacture_service/service
       dockerfile: Dockerfile
+    expose:
+      - 5000
     ports:
       - "5003:5000"
     volumes:
-      - ./manufacture_service:/code
-      - ./celery/app/proj:/code/proj
+      - ./manufacture_service/service:/code
+      - ./manufacture_service/manager:/code/manager
     environment:
       FLASK_ENV: development
+      FLASK_APP: run.py
+    depends_on:
+      - database
+      - celery
     networks:
       - backend
 
   celery:
     container_name: celery
     build:
-      context: manufacture_service/manager/
+      context: manufacture_service/manager
       dockerfile: Dockerfile
     volumes:
-      - ./celery/app:/app
+      - ./manufacture_service/manager:/code
     depends_on:
       - rabbit
     networks:
@@ -72,12 +90,24 @@ services:
   rabbit:
     container_name: rabbit
     hostname: rabbit
-    image: rabbitmq:3.7.15-alpine
+    image: rabbitmq
     environment:
       - RABBITMQ_DEFAULT_USER=admin
       - RABBITMQ_DEFAULT_PASS=whatever
     ports:
       - "5672:5672"
+    networks:
+      - backend
+
+  database: 
+    image: mysql
+    container_name: database
+    ports:
+      - "3386:3386"
+    environment:
+      - MYSQL_USER=admin
+      - MYSQL_PASSWORD=whatever
+      - MYSQL_ROOT_PASSWORD=banana
     networks:
       - backend
 
