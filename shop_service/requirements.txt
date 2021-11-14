@@ -1,13 +1,20 @@
+# Flask and related modules
 flask
 flask-restx
 flask-httpauth
 flask-sqlalchemy
 flask-migrate
+# MySQL stuff
+PyMySQL
+cryptography
+# PyTest
 pytest
 pytest-flask
 pytest-mock
+# Server
+gunicorn
+# Task queue
+celery
+# Other stuff
 python-dotenv
 requests
-gunicorn
-celery
-redis
