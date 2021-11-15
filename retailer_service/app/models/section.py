@@ -2,6 +2,13 @@ from app import db
 
 
 class SectionModel(db.Model):
+    # PID as a primary key must be unique, but from the logic perspective
+    # it should be unique only for a particular retailer. For examle:
+    # retailer_a and ratiler_b should be able to both have summer_sale. One
+    # way to make this happen is to utilise composite primary key, but this
+    # might complicate the system too much, so I choose left it this wasy
+    # for now.
+
     pid = db.Column(db.String(32), primary_key=True)
     retailer_pid = db.Column(db.String(32), db.ForeignKey('retailer_model.pid', onupdate='CASCADE', ondelete='CASCADE'), nullable=False)
 
